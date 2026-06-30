@@ -6,35 +6,30 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import Logo from "./Logo";
+import { BUSINESS, CITIES, SERVICES } from "@/config/business";
+
+const SERVICE_LINKS = [
+  SERVICES.homeCleaning && { href: "/services/home-cleaning",    label: "Home Cleaning" },
+  SERVICES.endOfLease  && { href: "/services/end-of-lease",      label: "End of Lease" },
+  SERVICES.commercial  && { href: "/services/commercial",         label: "Commercial" },
+  SERVICES.deepClean   && { href: "/services/deep-clean",         label: "Deep Clean" },
+  SERVICES.airbnb      && { href: "/services/airbnb-cleaning",    label: "Airbnb Cleaning" },
+  SERVICES.ndis        && { href: "/services/ndis",               label: "NDIS Cleaning" },
+].filter(Boolean) as { href: string; label: string }[];
+
+const LOCATION_LINKS = CITIES.map((c) => ({
+  href: `/locations/${c.slug}`,
+  label: `${c.name}, ${c.state}`,
+}));
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
-  {
-    href: "/services/home-cleaning",
-    label: "Services",
-    children: [
-      { href: "/services/home-cleaning", label: "Home Cleaning" },
-      { href: "/services/end-of-lease", label: "End of Lease" },
-      { href: "/services/commercial", label: "Commercial" },
-      { href: "/services/deep-clean", label: "Deep Clean" },
-      { href: "/services/airbnb-cleaning", label: "Airbnb Cleaning" },
-      { href: "/services/ndis", label: "NDIS Cleaning" },
-    ],
-  },
-  {
-    href: "/locations/perth",
-    label: "Locations",
-    children: [
-      { href: "/locations/perth",      label: "Perth, WA" },
-      { href: "/locations/melbourne",  label: "Melbourne, VIC" },
-      { href: "/locations/sydney",     label: "Sydney, NSW" },
-      { href: "/locations/launceston", label: "Launceston, TAS" },
-    ],
-  },
-  { href: "/pricing", label: "Pricing" },
-  { href: "/blog", label: "Tips & Guides" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
+  { href: "/services/home-cleaning", label: "Services",  children: SERVICE_LINKS },
+  { href: LOCATION_LINKS[0]?.href ?? "/locations", label: "Locations", children: LOCATION_LINKS },
+  { href: "/pricing",  label: "Pricing" },
+  { href: "/blog",     label: "Tips & Guides" },
+  { href: "/about",    label: "About" },
+  { href: "/contact",  label: "Contact" },
 ];
 
 export default function Navigation() {
@@ -42,19 +37,16 @@ export default function Navigation() {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const pathname = usePathname();
 
-  // Close mobile menu on route change
   useEffect(() => {
     setMenuOpen(false);
     setOpenDropdown(null);
   }, [pathname]);
 
-  // Prevent body scroll when menu is open
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
 
-  // Nav is always solid navy — consistent across all pages, always readable
   const darkMode = true;
 
   return (
@@ -62,9 +54,7 @@ export default function Navigation() {
       <header
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-300 backdrop-blur-md",
-          darkMode
-            ? "bg-navy-950/55 py-3"
-            : "bg-navy-950/55 py-5"
+          darkMode ? "bg-navy-950/55 py-3" : "bg-navy-950/55 py-5"
         )}
         role="banner"
       >
@@ -73,16 +63,13 @@ export default function Navigation() {
           <Link
             href="/"
             className="flex items-center gap-2 focus-visible:outline-none"
-            aria-label="Taspro Cleaning Solutions — Home"
+            aria-label={`${BUSINESS.name} — Home`}
           >
             <Logo variant={darkMode ? "dark" : "light"} size="md" />
           </Link>
 
           {/* Desktop nav links */}
-          <nav
-            className="hidden lg:flex items-center gap-1"
-            aria-label="Main navigation"
-          >
+          <nav className="hidden lg:flex items-center gap-1" aria-label="Main navigation">
             {NAV_LINKS.map((link) =>
               link.children ? (
                 <div
@@ -151,11 +138,7 @@ export default function Navigation() {
 
           {/* CTA button */}
           <div className="hidden lg:flex">
-            <Link
-              href="/quote"
-              className="btn-primary text-sm"
-              aria-label="Get a free instant quote"
-            >
+            <Link href="/quote" className="btn-primary text-sm" aria-label="Get a free instant quote">
               Get a Free Instant Quote
             </Link>
           </div>
@@ -247,8 +230,8 @@ export default function Navigation() {
                 <Link href="/quote" className="btn-primary w-full text-center justify-center text-base py-4">
                   Get a Free Instant Quote
                 </Link>
-                <a href="tel:+61870816811" className="btn-outline-white w-full text-center justify-center text-base py-4">
-                  Call (08) 7081 6811
+                <a href={`tel:${BUSINESS.phone}`} className="btn-outline-white w-full text-center justify-center text-base py-4">
+                  Call {BUSINESS.phoneFormatted}
                 </a>
               </div>
             </div>

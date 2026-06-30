@@ -8,13 +8,13 @@ import CookieBanner from "./components/CookieBanner";
 import WhatsAppWidget from "./components/WhatsAppWidget";
 import GoogleAnalytics from "./components/GoogleAnalytics";
 import { localBusinessSchema, websiteSchema } from "@/lib/schema";
+import { BUSINESS, CITIES } from "@/config/business";
 
 /* ── Fonts ── */
 const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-playfair",
   display: "swap",
-  // Subset to Latin characters only for performance
   weight: ["400", "600", "700", "800"],
 });
 
@@ -25,53 +25,49 @@ const plusJakarta = Plus_Jakarta_Sans({
   weight: ["400", "500", "600", "700"],
 });
 
+const cityList = CITIES.map((c) => `${c.name} ${c.state}`).join(", ");
+const fullServiceCities = CITIES.filter((c) => c.fullService).map((c) => c.name).join(" and ");
+
 /* ── Root metadata ── */
 export const metadata: Metadata = {
-  metadataBase: new URL("https://tasprocleaning.com.au"),
+  metadataBase: new URL(BUSINESS.url),
   title: {
-    default: "Taspro Cleaning Solutions | Professional Cleaning in Sydney, Melbourne, Perth & Launceston",
-    template: "%s | Taspro Cleaning Solutions",
+    default: `${BUSINESS.name} | Professional Cleaning in ${cityList}`,
+    template: `%s | ${BUSINESS.name}`,
   },
-  description:
-    "Trusted, police-checked professional cleaners for homes and offices across Sydney NSW, Melbourne VIC, Perth WA and Launceston TAS. Full-service hubs in Perth and Launceston — end-of-lease, deep cleans, NDIS and more. Book online in minutes.",
+  description: `Trusted, police-checked professional cleaners for homes and offices across ${cityList}. Full-service hubs in ${fullServiceCities} — end-of-lease, deep cleans, NDIS and more. Book online in minutes.`,
   keywords: [
-    "cleaning services sydney",
-    "cleaning services melbourne",
-    "cleaning services perth",
-    "cleaning services launceston",
-    "end of lease cleaning sydney",
-    "end of lease cleaning tasmania",
-    "house cleaning launceston",
+    ...CITIES.map((c) => `cleaning services ${c.name.toLowerCase()}`),
+    "end of lease cleaning",
+    "house cleaning",
     "commercial cleaning",
     "NDIS cleaning",
     "bond cleaning",
-    "taspro cleaning",
+    BUSINESS.name.toLowerCase(),
   ],
-  authors: [{ name: "Taspro Cleaning Solutions" }],
-  creator: "Taspro Cleaning Solutions",
-  publisher: "Taspro Cleaning Solutions",
+  authors: [{ name: BUSINESS.name }],
+  creator: BUSINESS.name,
+  publisher: BUSINESS.name,
   openGraph: {
     type: "website",
     locale: "en_AU",
-    url: "https://tasprocleaning.com.au",
-    siteName: "Taspro Cleaning Solutions",
-    title: "Taspro Cleaning Solutions | Professional Cleaning Services",
-    description:
-      "Trusted, police-checked professional cleaners for homes and offices across Sydney, Melbourne, Perth and Launceston. Full service in Perth and Launceston — end-of-lease, deep cleans, NDIS and more.",
+    url: BUSINESS.url,
+    siteName: BUSINESS.name,
+    title: `${BUSINESS.name} | Professional Cleaning Services`,
+    description: `Trusted, police-checked professional cleaners for homes and offices across ${cityList}. Full service in ${fullServiceCities} — end-of-lease, deep cleans, NDIS and more.`,
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Taspro Cleaning Solutions — Professional Cleaning Services",
+        alt: `${BUSINESS.name} — Professional Cleaning Services`,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Taspro Cleaning Solutions | Professional Cleaning Services",
-    description:
-      "Trusted cleaning services across Sydney, Melbourne, Perth and Launceston. Book online in minutes.",
+    title: `${BUSINESS.name} | Professional Cleaning Services`,
+    description: `Trusted cleaning services across ${cityList}. Book online in minutes.`,
     images: ["/og-image.jpg"],
   },
   robots: {
@@ -86,7 +82,6 @@ export const metadata: Metadata = {
     },
   },
 };
-
 
 export default function RootLayout({
   children,

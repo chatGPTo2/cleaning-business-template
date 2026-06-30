@@ -1,10 +1,4 @@
-/**
- * Pricing logic for Taspro Cleaning Solutions quote wizard.
- * All prices are in AUD.
- *
- * Base price model: $197 (1 bed / 1 bath) + bedroom add + bathroom add
- * + laundry add + storey add, then apply any service surcharge.
- */
+import { PRICING } from "@/config/business";
 
 export interface Addon {
   id: string;
@@ -19,25 +13,25 @@ export interface Addon {
   excludeForServices?: string[];
 }
 
-export const BASE_PRICE = 197;
+export const BASE_PRICE = PRICING.base;
 
 export const BEDROOM_ADDS: Record<string, number> = {
   studio: 0,
-  "1": 0,
-  "2": 30,
-  "3": 65,
-  "4": 90,
-  "5": 110,
-  "6": 140,
+  "1": PRICING.bedrooms[0],
+  "2": PRICING.bedrooms[1],
+  "3": PRICING.bedrooms[2],
+  "4": PRICING.bedrooms[3],
+  "5": PRICING.bedrooms[4],
+  "6": PRICING.bedrooms[5],
 };
 
 export const BATHROOM_ADDS: Record<string, number> = {
-  "1": 0,
-  "2": 25,
-  "3": 50,
-  "4": 75,
-  "5": 100,
-  "6": 125,
+  "1": PRICING.bathrooms[0],
+  "2": PRICING.bathrooms[1],
+  "3": PRICING.bathrooms[2],
+  "4": PRICING.bathrooms[3],
+  "5": PRICING.bathrooms[4],
+  "6": PRICING.bathrooms[5],
 };
 
 export const LAUNDRY_OPTIONS: { id: string; label: string; add: number }[] = [
@@ -52,13 +46,13 @@ export const STOREY_OPTIONS: { id: string; label: string; add: number }[] = [
   { id: "triple", label: "Triple Storey", add: 69 },
 ];
 
-export const HOURLY_RATE      = 85;
-export const NDIS_HOURLY_RATE = 58.03;
-export const HOURLY_MIN_HOURS = 3;
+export const HOURLY_RATE      = PRICING.hourlyRate;
+export const NDIS_HOURLY_RATE = PRICING.ndisRate;
+export const HOURLY_MIN_HOURS = PRICING.hourlyMinHours;
 
-export const OFFICE_RATE_DURING = 82.5;  // $/hr before 6pm, excl. GST
-export const OFFICE_RATE_AFTER  = 94;  // $/hr after 6pm (after hours), excl. GST
-export const OFFICE_MIN_HOURS   = 2;
+export const OFFICE_RATE_DURING = PRICING.commercialDuringHours;
+export const OFFICE_RATE_AFTER  = PRICING.commercialAfterHours;
+export const OFFICE_MIN_HOURS   = PRICING.commercialMinHours;
 
 export const ADDONS: Addon[] = [
   { id: "oven",            label: "Inside the Oven",                      icon: "🔥", unitPrice: 64, unitLabel: "",             hasQuantity: false, maxQty: 1  },
@@ -79,14 +73,14 @@ export const ADDONS: Addon[] = [
 ];
 
 export const FREQUENCY_DISCOUNTS: Record<string, { label: string; discount: number }> = {
-  once:        { label: "One-off",     discount: 0    },
-  weekly:      { label: "Weekly",      discount: 0.15 },
-  fortnightly: { label: "Fortnightly", discount: 0.10 },
-  monthly:     { label: "Monthly",     discount: 0.05 },
+  once:        { label: "One-off",     discount: 0 },
+  weekly:      { label: "Weekly",      discount: PRICING.weeklyDiscount },
+  fortnightly: { label: "Fortnightly", discount: PRICING.fortnightlyDiscount },
+  monthly:     { label: "Monthly",     discount: PRICING.monthlyDiscount },
 };
 
-export const EOL_SURCHARGE        = 0.25;
-export const DEEP_CLEAN_SURCHARGE = 0.15;
+export const EOL_SURCHARGE        = PRICING.endOfLeaseMultiplier;
+export const DEEP_CLEAN_SURCHARGE = PRICING.deepCleanMultiplier;
 
 export function calculatePrice(params: {
   serviceType: string;

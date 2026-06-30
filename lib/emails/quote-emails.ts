@@ -1,3 +1,4 @@
+import { BUSINESS } from "@/config/business";
 import {
   calculatePrice,
   ADDONS, BASE_PRICE,
@@ -381,7 +382,7 @@ export function buildQuoteAdminHtml(p: QuotePayload): string {
 
     <div style="padding:16px 32px;background:#f8fafc;border-top:1px solid #e2e8f0">
       <p style="margin:0;color:#94a3b8;font-size:12px">
-        Sent by the Taspro Cleaning quote form &mdash; tasprocleaning.com.au
+        Sent by the ${BUSINESS.name} quote form &mdash; ${BUSINESS.domain}
       </p>
     </div>
   </div>
@@ -469,15 +470,15 @@ export function buildQuoteClientHtml(p: QuotePayload): string {
       <div style="padding:16px;background:#f0fdf4;border-radius:8px;border-left:4px solid #22c55e">
         <p style="margin:0;color:#166534;font-size:13px;line-height:1.6">
           If you have any questions in the meantime, you can reach us at
-          <a href="mailto:info@tasprocleaning.com.au" style="color:#166534">info@tasprocleaning.com.au</a>
-          or call us on <a href="tel:+61870816811" style="color:#166534">(08) 7081 6811</a>.
+          <a href="mailto:${BUSINESS.email}" style="color:#166534">${BUSINESS.email}</a>
+          or call us on <a href="tel:${BUSINESS.phone}" style="color:#166534">${BUSINESS.phoneFormatted}</a>.
         </p>
       </div>
     </div>
 
     <div style="padding:16px 32px;background:#f8fafc;border-top:1px solid #e2e8f0">
       <p style="margin:0;color:#94a3b8;font-size:12px">
-        Taspro Cleaning Solutions &mdash; tasprocleaning.com.au
+        ${BUSINESS.name} &mdash; ${BUSINESS.domain}
       </p>
     </div>
   </div>

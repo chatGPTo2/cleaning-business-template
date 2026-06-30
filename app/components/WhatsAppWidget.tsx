@@ -1,9 +1,11 @@
 "use client";
 
+import { BUSINESS } from "@/config/business";
 import { trackEvent } from "@/lib/analytics";
 
-const WA_HREF =
-  "https://wa.me/61488853112?text=Hi%20Taspro%2C%20I%27d%20like%20to%20get%20a%20quick%20quote";
+const waNumber = BUSINESS.whatsapp.replace(/\D/g, "");
+const waMessage = encodeURIComponent(`Hi ${BUSINESS.shortName}, I'd like to get a quick quote`);
+const WA_HREF = `https://wa.me/${waNumber}?text=${waMessage}`;
 
 export default function WhatsAppWidget() {
   return (
@@ -12,7 +14,7 @@ export default function WhatsAppWidget() {
       target="_blank"
       rel="noopener noreferrer"
       onClick={() => trackEvent("whatsapp_click", { location: "floating_widget" })}
-      aria-label="Chat with Taspro on WhatsApp"
+      aria-label={`Chat with ${BUSINESS.shortName} on WhatsApp`}
       className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 rounded-full shadow-lg hover:-translate-y-1 hover:shadow-xl transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#25D366]"
       style={{ backgroundColor: "#25D366" }}
     >

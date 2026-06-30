@@ -1,3 +1,5 @@
+import { BUSINESS } from "@/config/business";
+
 export function buildContactAdminHtml(p: {
   name: string;
   email: string;
@@ -62,7 +64,7 @@ export function buildContactAdminHtml(p: {
 
     <div style="padding:16px 32px;background:#f8fafc;border-top:1px solid #e2e8f0">
       <p style="margin:0;color:#94a3b8;font-size:12px">
-        Sent by the Taspro Cleaning contact form &mdash; tasprocleaning.com.au
+        Sent by the ${BUSINESS.name} contact form &mdash; ${BUSINESS.domain}
       </p>
     </div>
   </div>
