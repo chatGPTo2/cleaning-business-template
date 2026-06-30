@@ -1,0 +1,20 @@
+{
+  "crons": [
+    {
+      "path": "/api/ai-seo/run",
+      "schedule": "0 18 * * *"
+    },
+    {
+      "path": "/api/admin/ai-seo/publish",
+      "schedule": "*/30 * * * *"
+    },
+    {
+      "path": "/api/admin/ai-seo/worker",
+      "schedule": "*/20 * * * *"
+    },
+    {
+      "path": "/api/cron/sync-reviews",
+      "schedule": "0 9 * * *"
+    }
+  ]
+}

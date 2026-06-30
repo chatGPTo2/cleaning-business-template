@@ -1,0 +1,244 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Custom CSS Variables ── */
+:root {
+  --teal: #1b6db3;
+  --navy: #0b1f3a;
+  --white: #ffffff;
+  --nav-height: 72px;
+}
+
+/* ── Base resets ── */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  body {
+    @apply font-body text-navy-950 bg-white;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display;
+  }
+
+  /* Focus visible for accessibility */
+  *:focus-visible {
+    @apply outline-2 outline-offset-2 outline-teal-500 rounded-sm;
+  }
+}
+
+/* ── Utility classes ── */
+@layer utilities {
+  .section-padding {
+    @apply py-16 md:py-24 lg:py-32;
+  }
+
+  .container-custom {
+    @apply mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-teal-500 to-teal-400 bg-clip-text text-transparent;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2
+           bg-teal-500 text-white font-semibold
+           px-6 py-3 rounded-xl
+           transition-all duration-200
+           hover:bg-teal-400 hover:shadow-teal hover:-translate-y-0.5
+           active:translate-y-0 active:shadow-none
+           focus-visible:outline-2 focus-visible:outline-teal-500;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2
+           bg-white text-navy-950 font-semibold
+           px-6 py-3 rounded-xl border-2 border-navy-950/10
+           transition-all duration-200
+           hover:border-teal-500 hover:text-teal-600 hover:-translate-y-0.5
+           active:translate-y-0
+           focus-visible:outline-2 focus-visible:outline-teal-500;
+  }
+
+  .btn-outline-white {
+    @apply inline-flex items-center justify-center gap-2
+           bg-transparent text-white font-semibold
+           px-6 py-3 rounded-xl border-2 border-white/40
+           transition-all duration-200
+           hover:bg-white/10 hover:border-white hover:-translate-y-0.5
+           active:translate-y-0
+           focus-visible:outline-2 focus-visible:outline-white;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300
+           hover:-translate-y-1 hover:shadow-card-hover;
+  }
+
+  .section-label {
+    @apply text-teal-500 font-semibold text-sm uppercase tracking-widest mb-3;
+  }
+
+  .section-heading {
+    @apply font-display text-3xl md:text-4xl lg:text-5xl text-navy-950 leading-tight;
+  }
+
+  .section-subheading {
+    @apply text-navy-950/65 text-lg leading-relaxed mt-4;
+  }
+}
+
+/* ── Grain overlay helper ── */
+.grain-overlay {
+  position: relative;
+}
+.grain-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* ── Smooth accordion animation ── */
+.accordion-content {
+  overflow: hidden;
+  transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Blog article prose styles ── */
+.blog-content {
+  overflow-wrap: break-word;
+  word-break: break-word;
+  overflow-x: hidden;
+}
+.blog-content h2 {
+  @apply font-display text-2xl md:text-3xl font-bold text-navy-950 mt-10 mb-4 leading-tight;
+}
+.blog-content h3 {
+  @apply font-display text-xl font-semibold text-navy-950 mt-7 mb-3;
+}
+.blog-content p {
+  @apply text-navy-950/70 leading-relaxed mb-5 text-base;
+}
+/* Unordered lists */
+.blog-content ul {
+  @apply mb-5 space-y-2 pl-0;
+}
+.blog-content ul li {
+  @apply text-navy-950/70 text-base leading-relaxed relative pl-6;
+}
+.blog-content ul li::before {
+  content: "✓";
+  @apply text-teal-500 font-bold absolute left-0 top-0.5;
+}
+/* Ordered lists */
+.blog-content ol {
+  @apply mb-5 pl-0 space-y-2;
+  counter-reset: blog-ol;
+}
+.blog-content ol li {
+  @apply text-navy-950/70 text-base leading-relaxed relative pl-6;
+  counter-increment: blog-ol;
+}
+.blog-content ol li::before {
+  content: counter(blog-ol) ".";
+  @apply text-teal-600 font-bold absolute left-0 top-0.5 min-w-[1.25rem];
+}
+/* Definition lists (dl/dt/dd) */
+.blog-content dl {
+  @apply mb-5 space-y-3;
+}
+.blog-content dt {
+  @apply font-semibold text-navy-950 text-base;
+}
+.blog-content dd {
+  @apply text-navy-950/70 text-base leading-relaxed pl-4 border-l-2 border-teal-200 ml-0 mt-1 mb-2;
+}
+/* Tables — fully contained, never overflow */
+.blog-content table {
+  @apply w-full mb-6 text-sm border-collapse;
+  table-layout: fixed;
+}
+.blog-content table th {
+  @apply bg-navy-950/[0.06] text-navy-950 font-semibold text-left px-3 py-2 border border-navy-950/10;
+}
+.blog-content table td {
+  @apply text-navy-950/70 px-3 py-2 border border-navy-950/10 align-top;
+}
+.blog-content table tr:nth-child(even) td {
+  @apply bg-navy-950/[0.02];
+}
+/* Blockquotes */
+.blog-content blockquote {
+  @apply my-6 pl-4 border-l-4 border-teal-400 bg-teal-50/50 rounded-r-xl py-3 pr-4 italic text-navy-950/70;
+}
+/* Horizontal rules */
+.blog-content hr {
+  @apply my-8 border-0 border-t border-navy-950/10;
+}
+/* Stray images outside .blog-figure */
+.blog-content img {
+  @apply max-w-full h-auto rounded-xl my-4;
+}
+.blog-link {
+  @apply text-teal-600 font-semibold underline underline-offset-2 decoration-teal-300
+         hover:text-teal-700 hover:decoration-teal-500 transition-colors;
+}
+.blog-content a:not(.blog-link) {
+  @apply text-teal-600 font-medium underline underline-offset-2 decoration-teal-300
+         hover:text-teal-700 transition-colors;
+}
+.blog-content strong {
+  @apply font-semibold text-navy-950;
+}
+.blog-content .blog-figure {
+  @apply my-8 overflow-hidden rounded-2xl border border-navy-950/10 bg-navy-950/[0.03];
+}
+.blog-content .blog-figure img {
+  @apply block w-full aspect-[16/9] object-cover;
+}
+.blog-content .blog-figure figcaption {
+  @apply px-4 py-3 text-sm text-navy-950/55 leading-relaxed;
+}
+
+/* ── Form field helpers (used in quote wizard & contact) ── */
+.form-label {
+  @apply block text-sm font-semibold text-navy-950 mb-1.5;
+}
+
+.form-input {
+  @apply w-full border-2 border-navy-950/10 rounded-xl px-4 py-3
+         text-navy-950 placeholder:text-navy-950/30 bg-white
+         focus:outline-none focus:border-teal-500
+         transition-colors duration-150 text-sm;
+}
+
+.form-error {
+  @apply mt-1 text-xs text-red-500 font-medium;
+}
+
+/* ── Custom scrollbar ── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f0f4f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #1b6db3;
+  border-radius: 3px;
+}
